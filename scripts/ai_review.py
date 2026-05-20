@@ -55,13 +55,22 @@ def parse_severity(review_text):
     return "WARNING"  # Default to WARNING if parsing fails
 
 
+# Only run this code when the script is executed directly
 if __name__ == "__main__":
+    # Check if a filename was passed as a command-line argument
     if len(sys.argv) > 1:
+        # Get the filename from sys.argv and read the file
         diff_file = sys.argv[1]
         with open(diff_file, "r") as f:
             diff_content = f.read()
     else:
+        # If no filename was passed, read from standard input
         diff_content = sys.stdin.read()
 
+    # Call the review function and print the result
     review = review_code(diff_content)
+    severity = parse_severity(review)
     print(review)
+
+    with open("severity.txt", "w") as f:
+        f.write(severity)
